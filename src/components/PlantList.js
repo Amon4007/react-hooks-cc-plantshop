@@ -1,9 +1,20 @@
+// components/PlantList.js
 import React from "react";
 import PlantCard from "./PlantCard";
 
-function PlantList() {
+
+function PlantList({ plants, searchTerm }) {
+  // Filter plants based on search term
+  const filteredPlants = plants.filter((plant) =>
+    plant.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
-    <ul className="cards">{/* render PlantCards components in here */}</ul>
+    <div>
+      {filteredPlants.map((plant) => (
+        <PlantCard key={plant.id} plant={plant} />
+      ))}
+    </div>
   );
 }
 
