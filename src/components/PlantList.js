@@ -1,37 +1,20 @@
-import React from "react";
-import PlantCard from "./PlantCard";
-
-function PlantList() {
-  return (
-    <ul className="cards">{/* render PlantCards components in here */}</ul>
-  );
-}
-
-export default PlantList;
 import React, { useEffect } from "react";
 import PlantCard from "./PlantCard";
 
 function PlantList({ plants, setPlants, searchedPlant }) {
-
   useEffect(() => {
-    fetch("http://localhost:6001/plants")
-      .then(res => res.json())
-      .then(data => setPlants(data))
-  }, [])
+    // Add any necessary effect logic here, if applicable
+  }, [plants]);
 
-  const filteredPlants = searchedPlant === "" ?
-    [...plants] :
-    plants.filter(plant => plant.name.toLowerCase().includes(searchedPlant.toLowerCase()))
-
-  function renderPlants() {
-    return filteredPlants.map(plant => {
-      return <PlantCard key={plant.id} plant={plant}/>
-    })
-  }
+  const filteredPlants = plants.filter((plant) =>
+    plant.name.toLowerCase().includes(searchedPlant.toLowerCase())
+  );
 
   return (
-    <ul className="cards">
-      {renderPlants()}
+    <ul className="plant-list">
+      {filteredPlants.map((plant) => (
+        <PlantCard key={plant.id} plant={plant} />
+      ))}
     </ul>
   );
 }

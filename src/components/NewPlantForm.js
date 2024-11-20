@@ -1,54 +1,28 @@
-import React from "react";
-
-function NewPlantForm() {
-  return (
-    <div className="new-plant-form">
-      <h2>New Plant</h2>
-      <form>
-        <input type="text" name="name" placeholder="Plant name" />
-        <input type="text" name="image" placeholder="Image URL" />
-        <input type="number" name="price" step="0.01" placeholder="Price" />
-        <button type="submit">Add Plant</button>
-      </form>
-    </div>
-  );
-}
-
-export default NewPlantForm;
 import React, { useState } from "react";
 
 function NewPlantForm({ handleAddPlant }) {
-
   const [formData, setFormData] = useState({
     name: "",
     image: "",
-    price: 0
-  })
+    price: "",
+  });
 
-  function handleChange(e) {
+  function handleChange(event) {
+    const { name, value } = event.target;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
-    })
+      [name]: value,
+    });
   }
 
-  function handleSubmit(e) {
-    e.preventDefault()
-    const newPlant = {
-      name: formData.name,
-      image: formData.image,
-      price: formData.price.toString()  // Convert price to string, as per test expectations
-    }
-
-    fetch("http://localhost:6001/plants", {
-      method: "POST",
-      headers: {
-        "Content-Type": "Application/JSON",  // Make sure header is "Application/JSON"
-      },
-      body: JSON.stringify(newPlant)
-    })
-    .then(res => res.json())
-    .then(plant => handleAddPlant(plant))
+  function handleSubmit(event) {
+    event.preventDefault();
+    handleAddPlant(formData);
+    setFormData({
+      name: "",
+      image: "",
+      price: "",
+    });
   }
 
   return (
@@ -59,12 +33,14 @@ function NewPlantForm({ handleAddPlant }) {
           type="text"
           name="name"
           placeholder="Plant name"
+          value={formData.name}
           onChange={handleChange}
         />
         <input
           type="text"
           name="image"
           placeholder="Image URL"
+          value={formData.image}
           onChange={handleChange}
         />
         <input
@@ -72,6 +48,7 @@ function NewPlantForm({ handleAddPlant }) {
           name="price"
           step="0.01"
           placeholder="Price"
+          value={formData.price}
           onChange={handleChange}
         />
         <button type="submit">Add Plant</button>
